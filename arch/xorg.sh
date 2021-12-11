@@ -62,20 +62,20 @@ sudo pacman -S xorg xorg-server rsync btop mpv nextcloud-client packagekit-qt5 n
 sudo pacman -S fish
 #sudo pacman -S zsh
 sudo pacman -S jre-openjdk jdk-openjdk keepassxc gnome-keyring libsecret
-sudo pacman -S qemu libvirt ovmf virt-manager ebtables iptables dnsmasq #VM
+sudo pacman -S qemu libvirt ovmf virt-manager ebtables dnsmasq #VM
 sudo pacman -S wpa_supplicant bluez bluez-utils #Wireless
 sudo pacman -S avahi #Network Discovery
 sudo pacman -S cups hplip #Printing
 #sudo pacman -S acpid #Laptop
-systemctl enable bluetooth
-systemctl enable cups.service
-systemctl enable avahi-daemon
-systemctl enable tlp # You can comment this command out if you didn't install tlp, see above
-systemctl enable reflector.timer
-systemctl enable fstrim.timer
-systemctl enable libvirtd
-#systemctl enable firewalld
-#systemctl enable acpid
+sudo systemctl enable bluetooth
+sudo systemctl enable cups.service
+sudo systemctl enable avahi-daemon
+sudo systemctl enable tlp # You can comment this command out if you didn't install tlp, see above
+sudo systemctl enable reflector.timer
+sudo systemctl enable fstrim.timer
+sudo systemctl enable libvirtd
+#sudo systemctl enable firewalld
+#sudo systemctl enable acpid
 
 
 # ============================= VM =============================
@@ -146,18 +146,18 @@ chsh -s $(which fish)
 printf "${green}Setup Hooks...\n${normal}"
 read -p ""
 sudo mkdir /etc/pacman.d/hooks
-echo "[Trigger]" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Operation = Upgrade" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Operation = Install" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Operation = Remove" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Type = Path" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Target = boot/*" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "[Action]" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Depends = rsync" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Description = Backing up /boot..." >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "When = PreTransaction" >> /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Exec = /usr/bin/rsync -a --delete /boot /.bootbackup" >> /etc/pacman.d/hooks/50-bootbackup.hook
+echo "[Trigger]" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Operation = Upgrade" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Operation = Install" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Operation = Remove" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Type = Path" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Target = boot/*" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "[Action]" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Depends = rsync" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Description = Backing up /boot..." | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "When = PreTransaction" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Exec = /usr/bin/rsync -a --delete /boot /.bootbackup" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 
 
 # ============================= Keys =============================
@@ -177,8 +177,8 @@ eval "(ssh-agent -s)"
 # ============================= Multilib =============================
 printf "${green}Enable Multilib...\n${normal}"
 read -p ""
-echo "[multilib]" >> /etc/pacman.conf
-echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+echo "[multilib]" | sudo tee -a /etc/pacman.conf
+echo "Include = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf
 sudo pacman -Syu
 
 
