@@ -10,7 +10,8 @@ read -p ""
 
 # ============================= Input =============================
 printf "${blue}Enter Root Password:\n${normal}"
-echo root:password | chpasswd
+read rootp
+echo "root:${rootp}" | chpasswd
 printf "${blue}Enter Hostname:\n${normal}"
 read hostname
 echo "Hostname: ${hostname}"
@@ -77,7 +78,9 @@ printf "${blue}Enter Username:\n${normal}"
 read username
 echo "Username: ${username}"
 useradd -mG wheel ${username}
-echo ${username}:password | chpasswd
+printf "${blue}Enter User Password:\n${normal}"
+read userp
+echo "${username}:${userp}" | chpasswd
 echo "${username} ALL=(ALL) ALL" >> /etc/sudoers.d/${username}
 
 printf "${green}Setup completed, type exit, umount -a, and reboot\n${normal}"
