@@ -65,8 +65,10 @@ systemctl enable libvirtd
 
 # ============================= VM =============================
 sudo pacman -S qemu libvirt ovmf virt-manager ebtables iptables dnsmasq #VM
-systemctl enable libvirtd
-usermod -aG libvirt ${username}
+sudo systemctl enable libvirtd.service
+sudo systemctl enable virtlogd.socket
+sudo usermod -aG libvirt ${username}
+sudo virsh net-autostart default
 
 
 # ============================= Browsers =============================
@@ -88,6 +90,12 @@ sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber h
 # ============================= Graphics =============================
 sudo pacman -S nvidia nvidia-utils nvidia-settings nvidia-dkms
 #sudo pacman -S amdvlk mesa
+
+
+# ============================= Mkinitcpio =============================
+read -p "Add graphics to modules (amdgpu, nvidia), enter to continue"
+sudo nano /etc/mkinitcpio.conf
+sudo mkinitcpio -p linux-zen
 
 
 # ============================= DM =============================
@@ -142,7 +150,10 @@ paru -S proton proton-ge-custom
 paru -S mangohud
 #paru -S streamdeck-ui
 paru -S obs-studio-tytan652
+sudo pacman -S discord
 paru -S betterdiscord-installer
 
 
-# ============================= Update =============================
+# ============================= Update User =============================
+sudo usermod -aG audio ${username}
+sudo usermod -aG video ${username}
