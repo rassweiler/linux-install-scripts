@@ -21,6 +21,7 @@ echo "Main: ${mainp}"
 
 
 # ============================= FS =============================
+printf "${green}Setting up file system\n${normal}"
 mkfs.vfat ${bootp}
 mkswap ${swapp}
 swapon ${swapp}
@@ -40,11 +41,13 @@ mount ${bootp} /mnt/boot
 
 
 # ============================= Location =============================
+printf "${green}Setting up location system\n${normal}"
 timedatectl set-ntp true
-reflector -c Canada -c US -a 6 --sort rate --save /etc/pacman.d/mirrorlist
+reflector -c Canada -c US -a 6 --sort rate --download-timeout 60 --save /etc/pacman.d/mirrorlist
 pacman -Syy
 
 # ============================= Pacstrap =============================
+printf "${green}Setting up pacstrap\n${normal}"
 # Intel
 #pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware nano intel-ucode cifs-utils reflector sudo git rsync
 # Amd
