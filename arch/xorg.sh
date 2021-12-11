@@ -3,14 +3,17 @@ blue=$(tput setaf 4)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 normal=$(tput sgr0)
-echo "Enter Username: "
+
+
+# ============================= Input =============================
+printf "${blue}Enter Username:\n${normal}"
 read username
 echo "Username: ${username}"
 
 
 # ============================= Snapshots =============================
 printf "${green}Fixing snapshots...\n${normal}"
-sleep 2
+read -p ""
 sudo umount /.snapshots
 sudo rm -r /.snapshots
 sudo snapper -c root create-config /
@@ -37,7 +40,7 @@ sudo systemctl enable --now snapper-cleanup.timer
 
 # ============================= Paru =============================
 printf "${green}Installing Paru...\n${normal}"
-sleep 2
+read -p ""
 cd ~
 git clone https://aur.archlinux.org/paru.git
 cd paru
@@ -47,14 +50,14 @@ cd ~
 
 # ============================= Snapshots Grub =============================
 printf "${green}Installing Snap Pac Grub...\n${normal}"
-sleep 2
+read -p ""
 #yay -S snap-pac-grub snapper-gui
 paru -S snap-pac-grub snapper-gui
 
 
 # ============================= General Packages =============================
 printf "${green}Installing General Packages...\n${normal}"
-sleep 2
+read -p ""
 sudo pacman -S xorg xorg-server rsync btop mpv nextcloud-client packagekit-qt5 neofetch code usbutils wget numlockx ttf-font-awesome nerd-fonts arc-icon-theme arandr starship exa
 sudo pacman -S fish
 #sudo pacman -S zsh
@@ -77,7 +80,7 @@ systemctl enable libvirtd
 
 # ============================= VM =============================
 printf "${green}Setting up vm systems...\n${normal}"
-sleep 2
+read -p ""
 sudo pacman -S qemu libvirt ovmf virt-manager ebtables dnsmasq #VM
 sudo systemctl enable libvirtd
 sudo systemctl enable virtlogd.socket
@@ -87,21 +90,21 @@ sudo virsh net-autostart default
 
 # ============================= Browsers =============================
 printf "${green}Installing browsers...\n${normal}"
-sleep 2
+read -p ""
 sudo pacman -S firefox
 paru -S librewolf
 
 
 # ============================= Terminals =============================
 printf "${green}Installing termil...\n${normal}"
-sleep 2
+read -p ""
 #sudo pacman -S alacritty
 paru -S wezterm
 
 
 # ============================= Audio =============================
 printf "${green}Installing audio...\n${normal}"
-sleep 2
+read -p ""
 #sudo pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth
 sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber helvum qjackctl easyeffects
 #paru -S noisetorch pipewire-jack-dropin
@@ -109,14 +112,14 @@ sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber h
 
 # ============================= Graphics =============================
 printf "${green}Installing graphics...\n${normal}"
-sleep 2
+read -p ""
 sudo pacman -S nvidia nvidia-utils nvidia-settings nvidia-dkms
 #sudo pacman -S amdvlk mesa
 
 
 # ============================= Mkinitcpio =============================
 printf "${green}Update mkinitcpio...\n${normal}"
-sleep 2
+read -p ""
 printf "${red}Add graphics to modules (amdgpu, nvidia), enter to continue...\n${normal}"
 read -p ""
 sudo nano /etc/mkinitcpio.conf
@@ -125,7 +128,7 @@ sudo mkinitcpio -p linux-zen
 
 # ============================= DM =============================
 printf "${green}Install DM...\n${normal}"
-sleep 2
+read -p ""
 paru -S lightdm-webkit-theme-aether
 sudo systemctl enable lightdm
 #sudo pacman -S sddm
@@ -134,14 +137,14 @@ sudo systemctl enable lightdm
 
 # ============================= Shell =============================
 printf "${green}Set Shell...\n${normal}"
-sleep 2
+read -p ""
 #chsh -s $(which zsh)
 chsh -s $(which fish)
 
 
 # ============================= Hooks =============================
 printf "${green}Setup Hooks...\n${normal}"
-sleep 2
+read -p ""
 sudo mkdir /etc/pacman.d/hooks
 echo "[Trigger]" >> /etc/pacman.d/hooks/50-bootbackup.hook
 echo "Operation = Upgrade" >> /etc/pacman.d/hooks/50-bootbackup.hook
@@ -159,7 +162,7 @@ echo "Exec = /usr/bin/rsync -a --delete /boot /.bootbackup" >> /etc/pacman.d/hoo
 
 # ============================= Keys =============================
 printf "${green}Setup SSH Keys...\n${normal}"
-sleep 2
+read -p ""
 echo "Enter Email For SSH Key: "
 read email
 echo "Email: ${email}"
@@ -173,7 +176,7 @@ eval "(ssh-agent -s)"
 
 # ============================= Multilib =============================
 printf "${green}Enable Multilib...\n${normal}"
-sleep 2
+read -p ""
 echo "[multilib]" >> /etc/pacman.conf
 echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 sudo pacman -Syu
@@ -181,7 +184,7 @@ sudo pacman -Syu
 
 # ============================= Gaming =============================
 printf "${green}Setup Gaming...\n${normal}"
-sleep 2
+read -p ""
 sudo pacman -S steam wine lutris wine-mono
 paru -S proton proton-ge-custom
 paru -S mangohud

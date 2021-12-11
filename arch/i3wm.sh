@@ -5,27 +5,30 @@ green=$(tput setaf 2)
 normal=$(tput sgr0)
 
 # ============================= Base =============================
-./xorg-intel.sh
-#./xorg-amd.sh
+./xorg.sh
 
 
 # ============================= GUI Packages =============================
 printf "${green}Installing i3wm gui packages...\n${normal}"
+read -p ""
 sudo pacman -S thunar feh conky dmenu picom rofi volumeicon
 
 
 # ============================= i3wm =============================
 printf "${green}Installing i3wm...\n${normal}"
+read -p ""
 sudo pacman -S i3-gaps i3blocks i3status
 
 
 # ============================= Audio =============================
 printf "${green}Installing pavucontrol...\n${normal}"
+read -p ""
 sudo pacman -S pavucontrol
 
 
 # ============================= Configs =============================
 printf "${green}Installing i3wm configs...\n${normal}"
+read -p ""
 cd ~
 git clone https://github.com/rassweiler/dotfiles.git
 cd dotfiles
