@@ -1,11 +1,16 @@
 #!/bin/bash
-
+blue=$(tput setaf 4)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+normal=$(tput sgr0)
 echo "Enter Username: "
 read username
 echo "Username: ${username}"
 
 
 # ============================= Snapshots =============================
+printf "${green}Fixing snapshots...\n${normal}"
+sleep 2
 sudo umount /.snapshots
 sudo rm -r /.snapshots
 sudo snapper -c root create-config /
@@ -15,7 +20,8 @@ sudo mount -a
 sudo chmod 750 /.snapshots
 sudo chmod a+rx /.snapshots
 sudo chown :${username} /.snapshots
-read -p "Editing Snapper Config, enter to continue"
+printf "${red}Editing Snapper Config add user to allowed, enter to continue...\n${normal}"
+read -p ""
 sudo nano /etc/snapper/configs/root
 sudo systemctl enable --now snapper-timeline.timer
 sudo systemctl enable --now snapper-cleanup.timer
@@ -30,6 +36,8 @@ sudo systemctl enable --now snapper-cleanup.timer
 
 
 # ============================= Paru =============================
+printf "${green}Installing Paru...\n${normal}"
+sleep 2
 cd ~
 git clone https://aur.archlinux.org/paru.git
 cd paru
@@ -38,11 +46,15 @@ cd ~
 
 
 # ============================= Snapshots Grub =============================
+printf "${green}Installing Snap Pac Grub...\n${normal}"
+sleep 2
 #yay -S snap-pac-grub snapper-gui
 paru -S snap-pac-grub snapper-gui
 
 
 # ============================= General Packages =============================
+printf "${green}Installing General Packages...\n${normal}"
+sleep 2
 sudo pacman -S xorg xorg-server rsync btop mpv nextcloud-client packagekit-qt5 neofetch code usbutils wget numlockx ttf-font-awesome nerd-fonts arc-icon-theme arandr starship exa
 sudo pacman -S fish
 #sudo pacman -S zsh
@@ -64,33 +76,56 @@ systemctl enable libvirtd
 
 
 # ============================= VM =============================
-sudo pacman -S qemu libvirt ovmf virt-manager ebtables iptables dnsmasq #VM
-systemctl enable libvirtd
-usermod -aG libvirt ${username}
+printf "${green}Setting up vm systems...\n${normal}"
+sleep 2
+sudo pacman -S qemu libvirt ovmf virt-manager ebtables dnsmasq #VM
+sudo systemctl enable libvirtd
+sudo systemctl enable virtlogd.socket
+sudo usermod -aG libvirt ${username}
+sudo virsh net-autostart default
 
 
 # ============================= Browsers =============================
+printf "${green}Installing browsers...\n${normal}"
+sleep 2
 sudo pacman -S firefox
 paru -S librewolf
 
 
 # ============================= Terminals =============================
+printf "${green}Installing termil...\n${normal}"
+sleep 2
 #sudo pacman -S alacritty
 paru -S wezterm
 
 
 # ============================= Audio =============================
+printf "${green}Installing audio...\n${normal}"
+sleep 2
 #sudo pacman -S pulseaudio pulseaudio-alsa pulseaudio-bluetooth
 sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber helvum qjackctl easyeffects
 #paru -S noisetorch pipewire-jack-dropin
 
 
 # ============================= Graphics =============================
+printf "${green}Installing graphics...\n${normal}"
+sleep 2
 sudo pacman -S nvidia nvidia-utils nvidia-settings nvidia-dkms
 #sudo pacman -S amdvlk mesa
 
 
+# ============================= Mkinitcpio =============================
+printf "${green}Update mkinitcpio...\n${normal}"
+sleep 2
+printf "${red}Add graphics to modules (amdgpu, nvidia), enter to continue...\n${normal}"
+read -p ""
+sudo nano /etc/mkinitcpio.conf
+sudo mkinitcpio -p linux-zen
+
+
 # ============================= DM =============================
+printf "${green}Install DM...\n${normal}"
+sleep 2
 paru -S lightdm-webkit-theme-aether
 sudo systemctl enable lightdm
 #sudo pacman -S sddm
@@ -98,11 +133,15 @@ sudo systemctl enable lightdm
 
 
 # ============================= Shell =============================
+printf "${green}Set Shell...\n${normal}"
+sleep 2
 #chsh -s $(which zsh)
 chsh -s $(which fish)
 
 
 # ============================= Hooks =============================
+printf "${green}Setup Hooks...\n${normal}"
+sleep 2
 sudo mkdir /etc/pacman.d/hooks
 echo "[Trigger]" >> /etc/pacman.d/hooks/50-bootbackup.hook
 echo "Operation = Upgrade" >> /etc/pacman.d/hooks/50-bootbackup.hook
@@ -119,30 +158,39 @@ echo "Exec = /usr/bin/rsync -a --delete /boot /.bootbackup" >> /etc/pacman.d/hoo
 
 
 # ============================= Keys =============================
+printf "${green}Setup SSH Keys...\n${normal}"
+sleep 2
 echo "Enter Email For SSH Key: "
 read email
 echo "Email: ${email}"
 ssh-keygen -t rsa -b 4096 -C "${email}"
 eval "(ssh-agent -s)"
-exec ssh-agent fish
+#exec ssh-agent fish
 #eval "$(ssh-agent -s)"
 #exec ssh-agent zsh
-ssh-add -K ~/.ssh/id_rsa
+#ssh-add -K ~/.ssh/id_rsa
 
 
 # ============================= Multilib =============================
+printf "${green}Enable Multilib...\n${normal}"
+sleep 2
 echo "[multilib]" >> /etc/pacman.conf
 echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 sudo pacman -Syu
 
 
 # ============================= Gaming =============================
+printf "${green}Setup Gaming...\n${normal}"
+sleep 2
 sudo pacman -S steam wine lutris wine-mono
 paru -S proton proton-ge-custom
 paru -S mangohud
 #paru -S streamdeck-ui
 paru -S obs-studio-tytan652
+sudo pacman -S discord
 paru -S betterdiscord-installer
 
 
-# ============================= Update =============================
+# ============================= Update User =============================
+sudo usermod -aG audio ${username}
+sudo usermod -aG video ${username}
