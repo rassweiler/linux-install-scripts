@@ -21,17 +21,21 @@ echo "Main: ${mainp}"
 
 
 # ============================= FS =============================
-printf "${green}Setting up file system\n${normal}"
+printf "${green}Setting up file system (enter)\n${normal}"
 read -p ""
+wipefs /dev/${mainp}
 mkfs.vfat ${bootp}
 mkswap ${swapp}
 swapon ${swapp}
-mkfs.btrfs ${mainp}
+mkfs.btrfs -f ${mainp}
 mount ${mainp} /mnt
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@home
 btrfs su cr /mnt/@snapshots
 btrfs su cr /mnt/@var_log
+
+printf "${green}Setting up file system Snapshots (enter)\n${normal}"
+read -p ""
 umount /mnt
 mount -o noatime,compress=lzo,space_cache=v2,subvol=@ ${mainp} /mnt
 mkdir -p /mnt/{boot,home,.snapshots,var/log}
