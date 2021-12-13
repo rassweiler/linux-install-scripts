@@ -58,7 +58,8 @@ paru -S snap-pac-grub snapper-gui
 # ============================= General Packages =============================
 printf "${green}Installing General Packages...\n${normal}"
 read -p ""
-sudo pacman -S xorg xorg-server rsync btop mpv nextcloud-client packagekit-qt5 neofetch code usbutils wget numlockx ttf-font-awesome nerd-fonts arc-icon-theme arandr starship exa
+sudo pacman -S xorg xorg-server
+sudo pacman -S rsync btop mpv nextcloud-client packagekit-qt5 neofetch code usbutils wget numlockx ttf-font-awesome nerd-fonts arc-icon-theme arandr starship exa lsd xfce4-settings
 sudo pacman -S fish
 #sudo pacman -S zsh
 sudo pacman -S jre-openjdk jdk-openjdk keepassxc gnome-keyring libsecret
