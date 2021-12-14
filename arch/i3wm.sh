@@ -9,25 +9,25 @@ normal=$(tput sgr0)
 
 
 # ============================= GUI Packages =============================
-printf "${green}Installing i3wm gui packages...\n${normal}"
+printf "${green}Installing i3wm gui packages... (enter)\n${normal}"
 read -p ""
 sudo pacman -S thunar gvfs feh conky dmenu picom rofi volumeicon
 
 
 # ============================= i3wm =============================
-printf "${green}Installing i3wm...\n${normal}"
+printf "${green}Installing i3wm... (enter)\n${normal}"
 read -p ""
 sudo pacman -S i3-gaps i3blocks i3status
 
 
 # ============================= Audio =============================
-printf "${green}Installing pavucontrol...\n${normal}"
+printf "${green}Installing pavucontrol... (enter)\n${normal}"
 read -p ""
 sudo pacman -S pavucontrol
 
 
 # ============================= Configs =============================
-printf "${green}Installing i3wm configs...\n${normal}"
+printf "${green}Installing i3wm configs... (enter)\n${normal}"
 read -p ""
 cd ~
 git clone https://github.com/rassweiler/dotfiles.git
