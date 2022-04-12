@@ -1,5 +1,30 @@
 #!/bin/bash
 
+#     ,^vfFIIIIIIIIIIIIIIIIIIIIIIFfv/,        
+#      ;z0WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW&n;     
+#    ;SWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWK;   
+#   1WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW[  
+#  rWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWr 
+# `BWMF11111*#WWWWWWWR11111111111111*vxC#MWWWWWWB`
+# ;WWWWC,     <0WWWWWb                   `=BWWWWW;
+# ;WWWWWMf`    `?NWWWb          ',,'       -BWWWW;
+# ;WWWWWWWBv     .xMWb          RWWWWO`     nWWWW;
+# ;WWWWWWWWW0=     ,CP          RWWWWW<     zWWWW;
+# ;WWWWWWWWWWWK~     `          RWWWW&'    'BWWWW;
+# ;WWWWWWWWWWWWWA               ;!!~-     /BWWWWW;
+# ;WWWWWWWWWWWMy'                       ;KWWWWWWW;
+# ;WWWWWWWWWWp:     `!          ^r=~      1MWWWWW;
+# ;WWWWWWWWR~      *Bb          RWWWB^     ~MWWWW;
+# ;WWWWWWB=      /RWWb          RWWWWM~     !MWWW;
+# ;WWWWNv`     ;OWWWWb          RWWWWWN;     <WWW;
+# ;WWMz`     -PWWWWWWb          RWWWWWWB:     JWW;
+# `BMi111111FMWWWWWWWR1111111111BWWWWWWW&111111RB`
+#  *WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW* 
+#   vWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWx  
+#    ~KWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWR~   
+#      ~I&WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWBI~     
+#         ,^vfFIIIIIIIIIIIIIIIIIIIIIIFfv/,     
+
 # ============================= Vars =============================
 blue=$(tput setaf 4)
 red=$(tput setaf 1)
@@ -37,11 +62,11 @@ btrfs su cr /mnt/@var_log
 printf "${green}Setting up file system Snapshots (enter)\n${normal}"
 read -p ""
 umount /mnt
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@ ${mainp} /mnt
+mount -o noatime,compress=zstd,space_cache=v2,discard=async,subvol=@ ${mainp} /mnt
 mkdir -p /mnt/{boot,home,.snapshots,var/log}
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@home ${mainp} /mnt/home
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots ${mainp} /mnt/.snapshots
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log ${mainp} /mnt/var/log
+mount -o noatime,compress=zstd,space_cache=v2,discard=async,subvol=@home ${mainp} /mnt/home
+mount -o noatime,compress=zstd,space_cache=v2,discard=async,subvol=@snapshots ${mainp} /mnt/.snapshots
+mount -o noatime,compress=zstd,space_cache=v2,discard=async,subvol=@var_log ${mainp} /mnt/var/log
 mount ${bootp} /mnt/boot
 
 

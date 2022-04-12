@@ -1,4 +1,30 @@
 #!/bin/bash
+
+#     ,^vfFIIIIIIIIIIIIIIIIIIIIIIFfv/,        
+#      ;z0WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW&n;     
+#    ;SWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWK;   
+#   1WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW[  
+#  rWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWr 
+# `BWMF11111*#WWWWWWWR11111111111111*vxC#MWWWWWWB`
+# ;WWWWC,     <0WWWWWb                   `=BWWWWW;
+# ;WWWWWMf`    `?NWWWb          ',,'       -BWWWW;
+# ;WWWWWWWBv     .xMWb          RWWWWO`     nWWWW;
+# ;WWWWWWWWW0=     ,CP          RWWWWW<     zWWWW;
+# ;WWWWWWWWWWWK~     `          RWWWW&'    'BWWWW;
+# ;WWWWWWWWWWWWWA               ;!!~-     /BWWWWW;
+# ;WWWWWWWWWWWMy'                       ;KWWWWWWW;
+# ;WWWWWWWWWWp:     `!          ^r=~      1MWWWWW;
+# ;WWWWWWWWR~      *Bb          RWWWB^     ~MWWWW;
+# ;WWWWWWB=      /RWWb          RWWWWM~     !MWWW;
+# ;WWWWNv`     ;OWWWWb          RWWWWWN;     <WWW;
+# ;WWMz`     -PWWWWWWb          RWWWWWWB:     JWW;
+# `BMi111111FMWWWWWWWR1111111111BWWWWWWW&111111RB`
+#  *WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW* 
+#   vWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWx  
+#    ~KWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWR~   
+#      ~I&WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWBI~     
+#         ,^vfFIIIIIIIIIIIIIIIIIIIIIIFfv/,     
+
 blue=$(tput setaf 4)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
@@ -24,6 +50,14 @@ sudo pacman -S i3-gaps i3blocks i3status
 printf "${green}Installing pavucontrol... (enter)\n${normal}"
 read -p ""
 sudo pacman -S pavucontrol
+
+# ============================= Battery =============================
+printf "${green}Installing upower... (enter)\n${normal}"
+read -p ""
+sudo pacman -S acpi
+#sudo pacman -S upower
+#sudo systemctl enable upower
+#sudo systemctl start upower
 
 
 # ============================= Configs =============================

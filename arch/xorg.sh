@@ -1,4 +1,30 @@
 #!/bin/bash
+
+#     ,^vfFIIIIIIIIIIIIIIIIIIIIIIFfv/,        
+#      ;z0WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW&n;     
+#    ;SWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWK;   
+#   1WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW[  
+#  rWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWr 
+# `BWMF11111*#WWWWWWWR11111111111111*vxC#MWWWWWWB`
+# ;WWWWC,     <0WWWWWb                   `=BWWWWW;
+# ;WWWWWMf`    `?NWWWb          ',,'       -BWWWW;
+# ;WWWWWWWBv     .xMWb          RWWWWO`     nWWWW;
+# ;WWWWWWWWW0=     ,CP          RWWWWW<     zWWWW;
+# ;WWWWWWWWWWWK~     `          RWWWW&'    'BWWWW;
+# ;WWWWWWWWWWWWWA               ;!!~-     /BWWWWW;
+# ;WWWWWWWWWWWMy'                       ;KWWWWWWW;
+# ;WWWWWWWWWWp:     `!          ^r=~      1MWWWWW;
+# ;WWWWWWWWR~      *Bb          RWWWB^     ~MWWWW;
+# ;WWWWWWB=      /RWWb          RWWWWM~     !MWWW;
+# ;WWWWNv`     ;OWWWWb          RWWWWWN;     <WWW;
+# ;WWMz`     -PWWWWWWb          RWWWWWWB:     JWW;
+# `BMi111111FMWWWWWWWR1111111111BWWWWWWW&111111RB`
+#  *WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW* 
+#   vWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWx  
+#    ~KWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWR~   
+#      ~I&WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWBI~     
+#         ,^vfFIIIIIIIIIIIIIIIIIIIIIIFfv/,        
+
 blue=$(tput setaf 4)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
@@ -67,13 +93,13 @@ sudo pacman -S wpa_supplicant bluez bluez-utils #Wireless
 sudo pacman -S avahi #Network Discovery
 sudo pacman -S cups hplip #Printing
 #sudo pacman -S acpid #Laptop
+#sudo pacman -S upower #Laptop
 sudo systemctl enable bluetooth
 sudo systemctl enable cups.service
 sudo systemctl enable avahi-daemon
 sudo systemctl enable tlp # You can comment this command out if you didn't install tlp, see above
 sudo systemctl enable reflector.timer
 sudo systemctl enable fstrim.timer
-sudo systemctl enable libvirtd
 #sudo systemctl enable firewalld
 #sudo systemctl enable acpid
 
@@ -84,6 +110,8 @@ read -p ""
 sudo pacman -S qemu libvirt ovmf virt-manager ebtables dnsmasq #VM
 sudo systemctl enable libvirtd
 sudo systemctl enable virtlogd.socket
+sudo systemctl start libvirtd
+sudo systemctl start virtlogd.socket
 sudo usermod -aG libvirt ${username}
 sudo virsh net-autostart default
 
@@ -151,12 +179,14 @@ echo "Operation = Upgrade" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 echo "Operation = Install" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 echo "Operation = Remove" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 echo "Type = Path" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
-echo "Target = boot/*" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+#echo "Target = boot/*" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "Target = usr/lib/modules/*/vmlinuz" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 echo "" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 echo "[Action]" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 echo "Depends = rsync" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 echo "Description = Backing up /boot..." | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
-echo "When = PreTransaction" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+#echo "When = PreTransaction" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
+echo "When = PostTransaction" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 echo "Exec = /usr/bin/rsync -a --delete /boot /.bootbackup" | sudo tee -a /etc/pacman.d/hooks/50-bootbackup.hook
 
 
@@ -186,7 +216,7 @@ sudo pacman -Syu
 printf "${green}Setup Gaming... (enter)\n${normal}"
 read -p ""
 sudo pacman -S steam wine lutris wine-mono
-paru -S proton proton-ge-custom
+paru -S proton proton-ge-custom protonup-qt
 paru -S mangohud
 #paru -S streamdeck-ui
 paru -S obs-studio-tytan652
